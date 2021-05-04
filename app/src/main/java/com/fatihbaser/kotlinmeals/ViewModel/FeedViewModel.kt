@@ -24,6 +24,7 @@ class FeedViewModel(application: Application) :BaseViewModel(application){
     private val mealApiService=MealAPIService()
     private val disposable=CompositeDisposable()//veri indridikdikce disposible atiyoruz(Hafizayi verimli kullanmak icin)
     private var customPreferences=CustomSharedPreferences(getApplication())
+    private var refreshTime = 10 * 60 * 1000 * 1000 * 1000L
 
 
     val meals= MutableLiveData<List<Meal>>()
@@ -31,8 +32,24 @@ class FeedViewModel(application: Application) :BaseViewModel(application){
     val mealLoading=MutableLiveData<Boolean>()
 
     fun refleshData(){
+        val updateTime = customPreferences.getTime()
+        if (updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
+            getDataFromSQLite()
+        } else {
+            getDataFromAPI()
+        }
 
+    }
+    fun refreshFromAPI() {
         getDataFromAPI()
+    }
+    private fun getDataFromSQLite() {
+        mealLoading.value = true
+        launch {
+            val countries = MealDatabase(getApplication()).mealDao().getAllCountries()
+            showMeals(countries)
+            Toast.makeText(getApplication(),"Countries From SQLite",Toast.LENGTH_LONG).show()
+        }
     }
     private fun getDataFromAPI(){
 
@@ -46,7 +63,7 @@ class FeedViewModel(application: Application) :BaseViewModel(application){
                             override fun onSuccess(t: List<Meal>) {
 
                                 storeInSqLite(t)
-
+                                Toast.makeText(getApplication(),"Countries From API",Toast.LENGTH_LONG).show()
 
                             }
 
@@ -81,5 +98,10 @@ class FeedViewModel(application: Application) :BaseViewModel(application){
         }
         customPreferences.saveTime(System.nanoTime())
 
+    }
+    override fun onCleared() {
+        super.onCleared()
+
+        disposable.clear()
     }
 }

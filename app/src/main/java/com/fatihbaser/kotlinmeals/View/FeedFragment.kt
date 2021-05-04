@@ -44,7 +44,7 @@ class FeedFragment : Fragment() {
             mealsList.visibility=View.GONE
             mealsList.visibility=View.GONE
             mealLoading.visibility=View.VISIBLE
-            viewModel.refleshData()
+            viewModel.refreshFromAPI()
             swipeRefleshLayout.isRefreshing=false
 
 

@@ -10,12 +10,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import com.fatihbaser.kotlinmeals.R
 import com.fatihbaser.kotlinmeals.ViewModel.MealViewModel
+import com.fatihbaser.kotlinmeals.util.downloadFromUrl
+import com.fatihbaser.kotlinmeals.util.placeholderProgressBar
 import kotlinx.android.synthetic.main.fragment_meals_detail.*
+import kotlinx.android.synthetic.main.item_meal.*
 
 
 class MealsDetailFragment : Fragment() {
 
     private lateinit var viewModel:MealViewModel
+    private var mealUuid=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +37,12 @@ class MealsDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        arguments?.let {
+            mealUuid=MealsDetailFragmentArgs.fromBundle(it ).mealsUiuid
+        }
         viewModel=ViewModelProviders.of(this).get(MealViewModel::class.java)
-        viewModel.getDataFromRoom()
+        viewModel.getDataFromRoom(mealUuid)
 
         observeLiveData()
     }
@@ -46,6 +54,10 @@ class MealsDetailFragment : Fragment() {
                 mealName.text=meal.mealName
                 malzemelerTextView.text=meal.malzemelerName
                 tarifiTextView.text=meal.tarifi
+                context?.let {
+                    mealImage.downloadFromUrl(meal.resim, placeholderProgressBar(it))
+
+                }
             }
         })
     }

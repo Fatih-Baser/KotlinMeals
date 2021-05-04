@@ -31,7 +31,8 @@ class MealAdapter(val mealList: ArrayList<Meal> ): RecyclerView.Adapter<MealAdap
         holder.view.name.text=mealList[position].mealName
 
         holder.view.setOnClickListener{
-            val action=FeedFragmentDirections.actionFeedFragmentToMealsDetailFragment()
+            val action=FeedFragmentDirections.actionFeedFragmentToMealsDetailFragment(mealList[position].uuid)
+
             Navigation.findNavController(it).navigate(action)
         }
         holder.view.imageView.downloadFromUrl(mealList[position].resim, placeholderProgressBar(holder.view.context))
