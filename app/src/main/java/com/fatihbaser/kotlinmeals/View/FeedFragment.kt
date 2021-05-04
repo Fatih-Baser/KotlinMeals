@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fatihbaser.kotlinmeals.R
 import com.fatihbaser.kotlinmeals.ViewModel.FeedViewModel
 import com.fatihbaser.kotlinmeals.adapter.MealAdapter
+
 import kotlinx.android.synthetic.main.fragment_feed.*
 
 class FeedFragment : Fragment() {
@@ -39,6 +40,16 @@ class FeedFragment : Fragment() {
         mealsList.layoutManager=LinearLayoutManager(context)
         mealsList.adapter=mealAdapter
 
+        swipeRefleshLayout.setOnRefreshListener {
+            mealsList.visibility=View.GONE
+            mealsList.visibility=View.GONE
+            mealLoading.visibility=View.VISIBLE
+            viewModel.refleshData()
+            swipeRefleshLayout.isRefreshing=false
+
+
+
+        }
         observeLiveData()
     }
     private fun observeLiveData(){

@@ -1,25 +1,85 @@
 package com.fatihbaser.kotlinmeals.ViewModel
 
+import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fatihbaser.kotlinmeals.Model.Meal
+import com.fatihbaser.kotlinmeals.service.MealAPI
+import com.fatihbaser.kotlinmeals.service.MealAPIService
+import com.fatihbaser.kotlinmeals.service.MealDatabase
+import com.fatihbaser.kotlinmeals.util.CustomSharedPreferences
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 //observable =gozlemlenebilir
 //observer =gozlemci
 //Mutable =degistirilebilir
-class FeedViewModel :ViewModel(){
+class FeedViewModel(application: Application) :BaseViewModel(application){
+
+    private val mealApiService=MealAPIService()
+    private val disposable=CompositeDisposable()//veri indridikdikce disposible atiyoruz(Hafizayi verimli kullanmak icin)
+    private var customPreferences=CustomSharedPreferences(getApplication())
+
 
     val meals= MutableLiveData<List<Meal>>()
     val mealError=MutableLiveData<Boolean>()
     val mealLoading=MutableLiveData<Boolean>()
 
     fun refleshData(){
-        val meal=Meal("kofte","et,tuz,seker","firinda pisir","www.ss.com")
-        val meal2=Meal("menemen","sogan,domates,seker","tavada pisir","www.ss.com")
-        val meal3=Meal("pogaca","hamur,tuz,yag","firinda 40dk  pisir","www.ss.com")
-        val meallist= arrayListOf<Meal>(meal,meal2,meal3)
-        meals.value=meallist
-        mealError.value=false
-        mealLoading.value=false
+
+        getDataFromAPI()
+    }
+    private fun getDataFromAPI(){
+
+        mealLoading.value = true
+
+        disposable.add(
+                mealApiService.getData()
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(object : DisposableSingleObserver<List<Meal>>(){
+                            override fun onSuccess(t: List<Meal>) {
+
+                                storeInSqLite(t)
+
+
+                            }
+
+                            override fun onError(e: Throwable) {
+                                mealLoading.value = false
+                                mealError.value = true
+                                e.printStackTrace()
+                            }
+
+                        })
+        )
+    }
+
+    private fun  showMeals(mealList: List<Meal>){
+        meals.value=mealList
+        mealLoading.value = false
+        mealError.value = false
+    }
+    private fun  storeInSqLite(list: List<Meal>){
+
+        launch {
+            val dao=MealDatabase(getApplication()).mealDao()
+            dao.deleteAllCountries()
+           val listLong= dao.insertAll(*list.toTypedArray())
+            var i=0
+             while (i<list.size){
+                 list[i].uuid=listLong[i].toInt()
+                 i=i+1
+             }
+            showMeals(list)
+
+        }
+        customPreferences.saveTime(System.nanoTime())
+
     }
 }

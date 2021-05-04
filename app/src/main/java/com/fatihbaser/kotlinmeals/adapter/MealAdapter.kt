@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fatihbaser.kotlinmeals.Model.Meal
 import com.fatihbaser.kotlinmeals.R
 import com.fatihbaser.kotlinmeals.View.FeedFragmentDirections
+import com.fatihbaser.kotlinmeals.util.downloadFromUrl
+import com.fatihbaser.kotlinmeals.util.placeholderProgressBar
 import kotlinx.android.synthetic.main.item_meal.view.*
 
 class MealAdapter(val mealList: ArrayList<Meal> ): RecyclerView.Adapter<MealAdapter.MealViewHolder>(){
@@ -32,6 +34,7 @@ class MealAdapter(val mealList: ArrayList<Meal> ): RecyclerView.Adapter<MealAdap
             val action=FeedFragmentDirections.actionFeedFragmentToMealsDetailFragment()
             Navigation.findNavController(it).navigate(action)
         }
+        holder.view.imageView.downloadFromUrl(mealList[position].resim, placeholderProgressBar(holder.view.context))
 
 
     }
