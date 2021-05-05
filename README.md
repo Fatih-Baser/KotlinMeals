@@ -1,5 +1,5 @@
 # KotlinMeals
-Used technologies: \n
+Used technologies: /n
 Fragment
 Navigation
 MVVM Architecture
