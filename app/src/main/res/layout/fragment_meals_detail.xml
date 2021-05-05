@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    
+    <data>
+        <variable
+            name="selectedmeal"
+            type="com.fatihbaser.kotlinmeals.model.Meal" />
+    </data>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,7 +19,8 @@
             android:layout_alignParentTop="true"
             android:scaleType="fitCenter"
             android:paddingTop="10dp"
-            android:src="@mipmap/ic_launcher_round"
+
+            android:downloadUrl="@{selectedmeal.resim}"
             android:minHeight="200dp"/>
 
         <TextView
@@ -21,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/mealImage"
-            android:text="Country Name"
+            android:text="@{selectedmeal.mealName}"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_centerHorizontal="true"
@@ -34,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/mealName"
-            android:text="Country Capital"
+            android:text="@{selectedmeal.malzemelerName}"
             android:textSize="16sp"
             android:layout_centerHorizontal="true"
             android:layout_margin="7dp">
@@ -46,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/malzemelerTextView"
-            android:text="Country Region"
+            android:text="@{selectedmeal.tarifi}"
             android:textSize="16sp"
             android:layout_centerHorizontal="true"
             android:layout_margin="7dp">

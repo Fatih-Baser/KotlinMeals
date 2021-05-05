@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.fatihbaser.kotlinmeals.Model.Meal
+import com.fatihbaser.kotlinmeals.model.Meal
 
 @Database(entities = arrayOf(Meal::class),version = 1 )
 abstract class MealDatabase : RoomDatabase() {
