@@ -2,7 +2,8 @@ package com.fatihbaser.kotlinmeals.ViewModel
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.fatihbaser.kotlinmeals.model.Meal
+import androidx.lifecycle.ViewModel
+import com.fatihbaser.kotlinmeals.Model.Meal
 import com.fatihbaser.kotlinmeals.service.MealDatabase
 import kotlinx.coroutines.launch
 

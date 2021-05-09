@@ -1,6 +1,6 @@
 package com.fatihbaser.kotlinmeals.service
 
-import com.fatihbaser.kotlinmeals.model.Meal
+import com.fatihbaser.kotlinmeals.Model.Meal
 import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory

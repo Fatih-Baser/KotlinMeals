@@ -3,7 +3,9 @@ package com.fatihbaser.kotlinmeals.ViewModel
 import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import com.fatihbaser.kotlinmeals.model.Meal
+import androidx.lifecycle.ViewModel
+import com.fatihbaser.kotlinmeals.Model.Meal
+import com.fatihbaser.kotlinmeals.service.MealAPI
 import com.fatihbaser.kotlinmeals.service.MealAPIService
 import com.fatihbaser.kotlinmeals.service.MealDatabase
 import com.fatihbaser.kotlinmeals.util.CustomSharedPreferences
@@ -11,6 +13,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 //observable =gozlemlenebilir

@@ -3,7 +3,7 @@ package com.fatihbaser.kotlinmeals.service
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.fatihbaser.kotlinmeals.model.Meal
+import com.fatihbaser.kotlinmeals.Model.Meal
 
 @Dao
 interface MealDao {

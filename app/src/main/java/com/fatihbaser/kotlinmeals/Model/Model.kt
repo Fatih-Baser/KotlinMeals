@@ -1,4 +1,4 @@
-package com.fatihbaser.kotlinmeals.model
+package com.fatihbaser.kotlinmeals.Model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
