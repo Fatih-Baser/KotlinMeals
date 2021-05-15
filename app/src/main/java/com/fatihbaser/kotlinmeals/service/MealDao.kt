@@ -1,12 +1,26 @@
 package com.fatihbaser.kotlinmeals.service
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.lifecycle.LiveData
+import androidx.room.*
+import com.fatihbaser.kotlinmeals.Model.FavoriteMeal
 import com.fatihbaser.kotlinmeals.Model.Meal
 
 @Dao
 interface MealDao {
+
+
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertfavorite(movie: FavoriteMeal?)
+
+    @Delete
+    fun deletefavorite(movie: FavoriteMeal?)
+
+    @Query("SELECT * FROM favoritemeal")
+    fun getAllfavorite(): LiveData<List<FavoriteMeal>>
+
+    @Query("SELECT * FROM favoritemeal WHERE uuid = :favoriteId")
+    fun getSinglefavorite(favoriteId:Int): LiveData<FavoriteMeal>
 
     //Data Access Object
     @Insert
